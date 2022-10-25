@@ -1,15 +1,13 @@
-import React from 'react';
-import Login from './pages/LoginUser/Login';
+import Router from "./Routers/Router";
+
+
+
 
 
 
 function App() {
   return (
-    <div >
-
-      <Login />
-    
-    </div>
+   <Router/>
   );
 }
 

@@ -1,5 +1,5 @@
 import { Box, Paper } from "@mui/material";
-import React from "react";
+import { Link } from "react-router-dom";
 import ButtonOutlined from "../../Components/Button/Button";
 import InputOutlined from "../../Components/Input/Input";
 
@@ -36,19 +36,21 @@ function Login() {
             type="text"
             label="E-mail"
             placeholder="Digite seu e-mail"
+           
           />
           <label htmlFor="Senha"></label>
           <InputOutlined
             type="password"
             label="Senha"
             placeholder="Digite sua senha"
+            
           />
           <ButtonOutlined tipoBotao ="button">
             Entrar na conta
           </ButtonOutlined>
         </form>
         <footer>
-          <a href="#">Nao possui conta? Cadastre-se</a>
+         <p>Não possui uma conta? <Link to={'/Cadastro'}>Cadastre-se</Link></p>
         </footer>
       </Paper>
     </Box>
