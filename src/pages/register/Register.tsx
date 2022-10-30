@@ -1,54 +1,70 @@
 import { Container, Button, Paper, TextField } from '@mui/material'
-import { FormEventHandler, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import User from '../../shared/interfaces/Interfaces'
-import { containerStyled, paperStyled } from '../../shared/styles/Styles'
+import { User, Notes } from '../../shared/interfaces/Interfaces'
+import {
+	containerStyled,
+	formStyled,
+	paperStyled
+} from '../../shared/styles/Styles'
 
 function Register() {
-	const navigate = useNavigate()
-
 	const userList = JSON.parse(
 		localStorage.getItem('userList') || '[]'
 	) as User[]
 
+	const navigate = useNavigate()
+
 	const onSubmit = (e: any) => {
 		e.preventDefault()
 
-		validateRegister(e)
+		if (validateRegister(e)) {
+			const user: User = {
+				name: e.target.elements.name.value,
+				email: e.target.elements.email.value,
+				password: e.target.elements.password.value,
+				notes: []
+			}
 
-		const user = {
-			name: e.target.elements.name.value,
-			email: e.target.elements.email.value,
-			password: e.target.elements.password.value
+			userList.push(user)
+
+			localStorage.setItem('userList', JSON.stringify(userList))
+
+			navigate('/')
 		}
-
-		userList.push(user)
-
-		localStorage.setItem('userList', JSON.stringify(userList))
-
-		navigate('/')
 	}
 
 	const validateRegister = (e: any) => {
-		if (!e.target.elements.name.value || e.target.elements.email.value) {
-			alert('Verifique os campos!')
-			return
-		}
-
-		// if (user.password !== user.repassword) {
-		// 	alert("Campos não coincidem!")
-		// 	return;
-		// }
-	}
-
-	const verifyUser = (e: any) => {
-		const verified = userList.find(
-			(user: User) => user.email === user.email
+		const emailAlreadyUsed = userList.find(
+			(user) => user.email === e.target.elements.email.value
 		)
 
-		if (!verified) {
-			alert('Usuário existente!')
+		if (
+			!e.target.elements.name.value ||
+			!e.target.elements.email.value ||
+			!e.target.elements.password.value ||
+			!e.target.elements.repassword.value
+		) {
+			alert('Por favor, preencha todos os campos.')
+
+			return false
 		}
+
+		if (emailAlreadyUsed) {
+			alert('O e-mail informado já está sendo utilizado.')
+
+			return false
+		}
+
+		if (
+			e.target.elements.password.value !==
+			e.target.elements.repassword.value
+		) {
+			alert('Senhas não coincidem.')
+
+			return false
+		}
+
+		return true
 	}
 
 	return (
@@ -57,28 +73,34 @@ function Register() {
 				<header>
 					<h2>Página de Cadastro</h2>
 				</header>
-				<form onSubmit={onSubmit}>
+				<form style={formStyled} onSubmit={onSubmit}>
 					<TextField
 						name='name'
 						type='text'
-						placeholder='Digite seu nome'
+						label='Nome'
+						fullWidth={true}
 					/>
 					<TextField
 						name='email'
 						type='text'
-						placeholder='Digite seu e-mail'
+						label='E-mail'
+						fullWidth={true}
 					/>
 					<TextField
 						name='password'
 						type='password'
-						placeholder='Digite sua senha'
+						label='Senha'
+						fullWidth={true}
 					/>
 					<TextField
 						name='repassword'
 						type='password'
-						placeholder='Digite sua senha'
+						label='Repita a senha'
+						fullWidth={true}
 					/>
-					<Button type='submit'>Cadastrar</Button>
+					<Button type='submit' variant='outlined' fullWidth={true}>
+						Cadastrar
+					</Button>
 				</form>
 				<footer>
 					<p>

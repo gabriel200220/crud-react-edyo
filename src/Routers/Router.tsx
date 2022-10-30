@@ -7,9 +7,8 @@ export default function Rotas() {
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<Login />}></Route>
-				<Route path='/Cadastro' element={<Register />}></Route>
+				<Route path='/cadastro' element={<Register />}></Route>
 				<Route path='/home' element=''></Route>
-				<Route path='*' element={<h1>ERRO 404</h1>}></Route>
 			</Routes>
 		</BrowserRouter>
 	)
